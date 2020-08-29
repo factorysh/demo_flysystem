@@ -23,3 +23,5 @@ $client = new S3Client($s3Cfg);
 $adapter = new AwsS3Adapter($client, $_SERVER['BUCKET'], 'upload');
 
 $filesystem = new Filesystem($adapter);
+
+echo 'Hello world';
