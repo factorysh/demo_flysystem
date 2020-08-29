@@ -1,0 +1,29 @@
+---
+
+version: "3"
+
+services:
+  minio:
+    image: minio/minio
+    environment:
+      MINIO_ACCESS_KEY: ${ACCESS_KEY}
+      MINIO_SECRET_KEY: ${SECRET_KEY}
+    volumes:
+      - ./data/minio:/data
+    command: server /data
+
+  app:
+    image: demo_flysystem_app
+    environment:
+      ACCESS_KEY: ${ACCESS_KEY}
+      SECRET_KEY: ${SECRET_KEY}
+      BUCKET: demo_flysystem
+      REGION: us-east-1
+      S3_ENDPOINT: http://minio:9000
+    depends_on:
+      - minio
+
+  front:
+    image: demo_flysystem_front
+    depends_on:
+      - app

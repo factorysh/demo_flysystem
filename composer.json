@@ -1,0 +1,13 @@
+{
+    "name": "factorysh/demo_flysystem",
+    "description": "Flystem Demo",
+    "authors": [
+        {
+            "name": "Mathieu Lecarme",
+            "email": "mlecarme@bearstech.com"
+        }
+    ],
+    "require": {
+        "league/flysystem-aws-s3-v3": "^1.0"
+    }
+}
