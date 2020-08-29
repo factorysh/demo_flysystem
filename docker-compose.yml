@@ -27,3 +27,5 @@ services:
     image: demo_flysystem_front
     depends_on:
       - app
+    ports:
+      - 8000:8000
