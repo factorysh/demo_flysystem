@@ -19,23 +19,21 @@ if ($_SERVER['S3_ENDPOINT']) {
     $s3Cfg['use_path_style_endpoint'] = true;
 }
 $client = new S3Client($s3Cfg);
-
 $adapter = new AwsS3Adapter($client, $_SERVER['BUCKET'], 'upload');
-
 $filesystem = new Filesystem($adapter);
 
 $uploadName = "fileToUpload";
-
-var_dump($_FILES[$uploadName] == null);
 
 if ($_FILES[$uploadName] != null) {
     echo 'Upload';
     $stream = fopen($_FILES[$uploadName]['tmp_name'], 'r+');
     $up = $filesystem->writeStream(
-        'upload/' . $_FILES[$uploadName]['name'],
+        $_FILES[$uploadName]['name'],
         $stream
     );
-    var_dump($up);
+    if(! $up) {
+        echo "oups";
+    };
     if (is_resource($stream)) {
         fclose($stream);
     }
@@ -51,6 +49,14 @@ if ($_FILES[$uploadName] != null) {
 
 <body>
     <h1>Demo Flysystem</h1>
+
+    <ul>
+    <?php
+        $contents = $filesystem->listContents('', false);
+        foreach ($contents as $object) { ?>
+            <li><a href="<?=$object['path']?>"><?=$object['basename']?></a></li>
+        <?php } ?>
+    </ul>
 
     <form action="/" method="post" enctype="multipart/form-data">
         <input type="file" name="fileToUpload" id="fileToUpload">
