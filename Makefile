@@ -37,11 +37,15 @@ dev: data
 .mc:
 	mkdir -p .mc
 
+
+mc=docker-compose -f docker-compose.yml -f dev.yml run --rm fixture
 fixture: .mc
-	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture alias set flysystem http://minio:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --api S3v4
-	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture alias ls
-	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture mb --ignore-existing flysystem/demo-flysystem
-	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture ls flysystem
+	${mc} alias set flysystem http://minio:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --api S3v4
+	${mc} alias ls
+	${mc} mb --ignore-existing flysystem/demo-flysystem
+	${mc} ls flysystem
+	${mc} policy set download flysystem/demo-flysystem
+	${mc} policy get flysystem/demo-flysystem
 
 clean:
 	rm -rf vendor
