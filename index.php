@@ -25,7 +25,6 @@ $filesystem = new Filesystem($adapter);
 $uploadName = "fileToUpload";
 
 if ($_FILES[$uploadName] != null) {
-    echo 'Upload';
     $stream = fopen($_FILES[$uploadName]['tmp_name'], 'r+');
     $up = $filesystem->writeStream(
         $_FILES[$uploadName]['name'],
