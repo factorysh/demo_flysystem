@@ -29,5 +29,19 @@ up: data
 	docker-compose up -d --remove-orphans
 	docker-compose ps
 
+dev: data
+	docker-compose -f docker-compose.yml -f dev.yml up -d --remove-orphans
+	docker-compose -f docker-compose.yml -f dev.yml ps
+	docker-compose -f docker-compose.yml -f dev.yml logs -f
+
+.mc:
+	mkdir -p .mc
+
+fixture: .mc
+	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture alias set flysystem http://minio:9000 AKIAIOSFODNN7EXAMPLE wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY --api S3v4
+	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture alias ls
+	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture mb --ignore-existing flysystem/demo-flysystem
+	docker-compose -f docker-compose.yml -f dev.yml run --rm fixture ls flysystem
+
 clean:
 	rm -rf vendor

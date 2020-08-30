@@ -11,13 +11,15 @@ services:
     volumes:
       - ./data/minio:/data
     command: server /data
+    ports:
+      - 9000:9000
 
   app:
     image: demo_flysystem_app
     environment:
       ACCESS_KEY: ${ACCESS_KEY}
       SECRET_KEY: ${SECRET_KEY}
-      BUCKET: demo_flysystem
+      BUCKET: demo-flysystem
       REGION: us-east-1
       S3_ENDPOINT: http://minio:9000
     depends_on:

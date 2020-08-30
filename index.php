@@ -14,7 +14,7 @@ $s3Cfg = [
     'region' => $_SERVER['REGION'],
     'version' => 'latest',
 ];
-if($_SERVER['S3_ENDPOINT']) {
+if ($_SERVER['S3_ENDPOINT']) {
     $s3Cfg['endpoint'] = $_SERVER['S3_ENDPOINT'];
     $s3Cfg['use_path_style_endpoint'] = true;
 }
@@ -24,4 +24,39 @@ $adapter = new AwsS3Adapter($client, $_SERVER['BUCKET'], 'upload');
 
 $filesystem = new Filesystem($adapter);
 
-echo 'Hello world';
+$uploadName = "fileToUpload";
+
+var_dump($_FILES[$uploadName] == null);
+
+if ($_FILES[$uploadName] != null) {
+    echo 'Upload';
+    $stream = fopen($_FILES[$uploadName]['tmp_name'], 'r+');
+    $up = $filesystem->writeStream(
+        'upload/' . $_FILES[$uploadName]['name'],
+        $stream
+    );
+    var_dump($up);
+    if (is_resource($stream)) {
+        fclose($stream);
+    }
+}
+
+?>
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Demo Flysystem</title>
+</head>
+
+<body>
+    <h1>Demo Flysystem</h1>
+
+    <form action="/" method="post" enctype="multipart/form-data">
+        <input type="file" name="fileToUpload" id="fileToUpload">
+        <input type="submit" value="Upload Image" name="submit">
+    </form>
+
+</body>
+
+</html>

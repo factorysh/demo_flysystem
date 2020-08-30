@@ -1,0 +1,27 @@
+---
+
+version: "3"
+
+services:
+  app:
+    image: bearstech/php:7.3
+    volumes:
+      - ./index.php:/var/www/web/index.php
+      - ./vendor:/var/www/web/vendor
+    user: www-data
+    environment:
+      ACCESS_KEY: ${ACCESS_KEY}
+      SECRET_KEY: ${SECRET_KEY}
+      BUCKET: demo-flysystem
+      REGION: us-east-1
+      S3_ENDPOINT: http://minio:9000
+    depends_on:
+      - minio
+
+  fixture:
+    image: minio/mc
+    depends_on:
+      - minio
+    command: ls
+    volumes:
+      - ./.mc:/root/.mc
