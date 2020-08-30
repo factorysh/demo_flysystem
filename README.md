@@ -7,7 +7,6 @@ Flysystem Demo with object storage
 
 [Minio](https://min.io/) is an open source object storage service, using S3 API. Other implementations exist, but *minio* is the simplest one for using with *docker-compose*.
 
-
 Demo
 ----
 
@@ -19,4 +18,6 @@ Launch all services
 
     make up
 
-Open http://localhost:9000/
+Open http://localhost:8000/ for the main website.
+
+Minio private web UI url is http://localhost:9000/ account information are in the `.env` file.
